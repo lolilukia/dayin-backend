@@ -1,32 +1,64 @@
 <?php
 
 namespace app\models;
+use yii\db\ActiveRecord;
 
-class User extends \yii\base\Object implements \yii\web\IdentityInterface
+class User extends ActiveRecord
 {
-    public $id;
-    public $username;
-    public $password;
-    public $authKey;
-    public $accessToken;
+    //public $id;
+    //public $username;
+    //public $password;
+    //public $register_time;
+    //public $authKey;
+    //public $accessToken;
 
     private static $users = [
         '100' => [
             'id' => '100',
             'username' => 'admin',
             'password' => 'admin',
-            'authKey' => 'test100key',
-            'accessToken' => '100-token',
+            //'authKey' => 'test100key',
+            //'accessToken' => '100-token',
         ],
         '101' => [
             'id' => '101',
             'username' => 'demo',
             'password' => 'demo',
-            'authKey' => 'test101key',
-            'accessToken' => '101-token',
+            //'authKey' => 'test101key',
+            //'accessToken' => '101-token',
         ],
     ];
 
+    public static function tableName()
+    {
+        return 'user';
+    }
+
+    public static function addNewUser($username, $password)
+    {
+        $customer = new User();
+        $customer->username = $username;
+        $customer->password = $password;
+        $customer->save();
+        return true;
+    }
+
+    public static function checkUser($username, $password)
+    {
+        $customer = User::find()->where(['username'=>$username])->one();
+        if(!$customer){
+            return 0;
+        }
+        else{
+            $customerPwd = $customer->password;
+            if($customerPwd==$password){
+                return 1;
+            }
+            else{
+                return 2;
+            }
+        }
+    }
 
     /**
      * @inheritdoc
