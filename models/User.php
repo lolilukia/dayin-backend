@@ -60,6 +60,26 @@ class User extends ActiveRecord
         }
     }
 
+    public static function getInfo($username)
+    {
+        $customer = User::find()->where(['username'=>$username])->one();
+        $info = array('birthday'=>$customer->birthday, 'gender'=>$customer->gender, 'register_time'=>$customer->register_time, 'introduction'=>$customer->introduction);
+        return $info;
+    }
+
+    public static function editInfo($username, $birth, $gender, $intro)
+    {
+        $customer = User::find()->where(['username'=>$username])->one();
+        $customer->birthday = date("Y/m/d G:i:s A",strtotime($birth));
+        if($gender==1){
+            $customer->$gender = 'male';
+        }
+        else{
+            $customer->$gender = 'female';
+        }
+        $customer->intro = $intro;
+        return true;
+    }
     /**
      * @inheritdoc
      */
