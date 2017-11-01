@@ -70,7 +70,7 @@ class User extends ActiveRecord
     public static function editInfo($username, $birth, $gender, $intro)
     {
         $customer = User::find()->where(['username'=>$username])->one();
-        $customer->birthday = date("Y/m/d G:i:s A",strtotime($birth));
+        //$customer->birthday = date("Y/m/d G:i:s A",strtotime($birth));
         if($gender==1){
             $customer->$gender = 'male';
         }
